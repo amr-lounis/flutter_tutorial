@@ -6,6 +6,7 @@ import 'BasicAnimation/MenuPage.dart' as BasicAnimation;
 import 'BasicPages/MenuPage.dart' as BasicPages;
 import 'BasicInput/MenuPage.dart' as BasicInput;
 import 'BasicHttp/MenuPage.dart' as BasicHttp;
+import 'BasicMap/MenuPage.dart' as BasicMap;
 ///////////////////////////////////////////////////////////////////////////////
 class PageOne extends StatefulWidget {
   PageOne({Key key, this.title}) : super(key: key);
@@ -38,6 +39,7 @@ class _PageOneState extends State<PageOne> {
             ListTile_Navigator(context,"animation",BasicAnimation.PageOne()),
             ListTile_Navigator(context,"BasicPages",BasicPages.PageOne()),
             ListTile_Navigator(context,"BasicHttp",BasicHttp.PageOne()),
+            ListTile_Navigator(context,"BasicMap",BasicMap.PageOne()),
           ]),
     );
   }

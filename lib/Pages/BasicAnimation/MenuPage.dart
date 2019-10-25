@@ -7,7 +7,6 @@ import 'animation06.dart' as animation06;
 import 'animation07.dart' as animation07;
 import 'animation08.dart' as animation08;
 import 'animation09.dart' as animation09;
-import 'animationIcon.dart' as animationIcon;
 
 import '../Widget/ui_emement/ListTile_Navigator.dart';
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,7 +41,6 @@ class _PageOneState extends State<PageOne> {
             ListTile_Navigator(context,"animation07",animation07.BasicAnimmation()),
             ListTile_Navigator(context,"animation08",animation08.BasicAnimmation()),
             ListTile_Navigator(context,"animation09",animation09.BasicAnimmation()),
-            ListTile_Navigator(context,"animationIcon",animationIcon.BasicAnimmation()),
           ]),
     );
   }
