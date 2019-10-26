@@ -47,7 +47,7 @@ class _PageOneState extends State<PageOne> {
             FloatingActionButton(
               child: Text("Run"),
               onPressed: (){
-                showSnakeBar(p_widget:Text(calc(1,2,concat)),p_time: 5);
+                showSnakeBar(p_widget:Text(calc(1,2,3,concat)),p_time: 5);
                 setState(() {
                   ssst = "ok";
                 });
@@ -58,11 +58,11 @@ class _PageOneState extends State<PageOne> {
     );
   }
   //*************************************************
-  String calc(int a,int b,Function op){
-    return (op(a,b)).toString();
+  String calc(int a,int b,int c,Function op){
+    return (op(a,b,3)).toString();
   }
   //@required // use in constrictor
-  String concat(@required int a,int b){return "${a.toString()}${b.toString()}";}
+  String concat(@required int a,int b,int c /* notused */){return "${a.toString()}${b.toString()}";}
   //*************************************************
   var array =[Text("01"),Text("02"),Text("03"),Text("04"),Text("05")];
   var array2 =[

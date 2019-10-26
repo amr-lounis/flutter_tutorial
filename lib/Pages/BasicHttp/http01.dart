@@ -30,7 +30,10 @@ class _PageOneState extends State<PageOne> {
              Map<String,dynamic>  da1= { 'var5':'33','var4':'44', };
              List<Map<String,dynamic>>  da2= [da1,da1,da1];
              Map<String,dynamic>  dataPost= { 'var1':'11','var2':'${da2}', };
-             sendRequest(url: url);
+             sendRequest(url: url,function: (v){setState(() {
+               //responseString = v;
+               responseString = getIntValueFromJsonString(v,'totalItems').toString();
+             });});
            }, ),
            Text(responseString ,style: TextStyle(fontSize: 30),)
          ],),
@@ -38,7 +41,7 @@ class _PageOneState extends State<PageOne> {
   }
 
   bool _progressBarActive = false;
-  sendRequest({String url,Map map})async{
+  sendRequest({@required String url,Map map,@required Function function})async{
     setState(() {
       _progressBarActive = true;
     });
@@ -52,12 +55,13 @@ class _PageOneState extends State<PageOne> {
     setState(() {
       _progressBarActive = false;
     });
+    function(response);
+  }
+  getIntValueFromJsonString(String p_string_input,String p_key){
     try{
-      final Map<String,dynamic> responseData = convert.jsonDecode(response);
-      final itemCount = responseData['totalItems'];
-      setState(() {
-        responseString = itemCount.toString();
-      });
-    }catch( e ){ print(e.toString());responseString =""; }
+      final Map<String,dynamic> responseData = convert.jsonDecode(p_string_input);
+      final itemCount = responseData[p_key];
+      return itemCount;
+    }catch( e ){ print(e.toString());return -1; }
   }
 }

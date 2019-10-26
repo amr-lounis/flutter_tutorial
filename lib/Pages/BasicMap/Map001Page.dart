@@ -18,12 +18,27 @@ class _PageOneState extends State<PageOne> {
 
   @override
   void dispose() {
-    _getPositionSubscription.cancel();
     super.dispose();
   }
   @override
   Widget build(BuildContext vvv) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.cancel),
+          onPressed: ()async{
+            var pos = await location.getLocation();
+            mapController.move(LatLng(pos.latitude, pos.longitude), zoomMap);
+            if(!boolOnLocationChanged){
+              _getPositionSubscription = location.onLocationChanged().listen((currentLocation) {
+                print("${currentLocation.latitude}   ${currentLocation.longitude}" );
+                boolOnLocationChanged = true;
+              });
+            }else{
+              _getPositionSubscription.cancel();
+              boolOnLocationChanged = false;
+            }
+
+      }),
       appBar: widgetAppBar(),
       body: widgetBody(vvv),
     );
@@ -65,52 +80,50 @@ class _PageOneState extends State<PageOne> {
     );
   }
 
-  StreamSubscription _getPositionSubscription;
   void _handleTap(LatLng latlng) async {
-    var pos = await location.getLocation();
-    mapController.move(LatLng(pos.latitude, pos.longitude), zoomMap);
     setState(() {
-      if(listMarker.length==0)addMarkToList(LatLng(pos.latitude, pos.longitude));
+      if(listMarker.length==0)addMarkToList(LatLng(latlng.latitude, latlng.longitude));
       else {
         listMarker[0].point.latitude = latlng.latitude;
         listMarker[0].point.longitude = latlng.longitude;
       }
     });
-    _getPositionSubscription = location.onLocationChanged().listen((currentLocation) {
-      print("${currentLocation.latitude}   ${currentLocation.longitude}" );
-    });
   }
   double zoomMap =5;
+  var location = new loc.Location();
   MapController mapController = new MapController();
+  ////////////////////////////////////////////////////////////////////////
+  List<Marker> listMarker = [];
+  addMarkToList(LatLng p_lat_lgt){
+    listMarker.add(addMarck(p_lat_lgt));
+  }
+  addMarck(LatLng p_lat_lgt){
+    return Marker(
+      width: 70.0,
+      height: 70.0,
+      point: p_lat_lgt,
+      builder: (ctx) =>  Container(
+        child: IconButton(icon: Icon(Icons.location_on,color: Colors.red,size: 50,), onPressed: null),
+        color: Colors.amber.withOpacity(0.2),
+      ),
+    );
+  }
+  ////////////////////////////////////////////////////////////////////////
+  List<CircleMarker> listCircleMarker = [];
+  addCircleMarkerToList(LatLng p_LatLang){
+    listCircleMarker.add(addCircleMarker(p_LatLang));
+  }
+  addCircleMarker(p_LatLang){
+    return CircleMarker(
+        point: p_LatLang,
+        color: Colors.blue.withOpacity(0.7),
+        useRadiusInMeter: true,
+        radius: 2000 // 2000 meters | 2 km
+    );
+  }
 }
-var location = new loc.Location();
-////////////////////////////////////////////////////////////////////////
-List<Marker> listMarker = [];
-addMarkToList(LatLng p_lat_lgt){
-  listMarker.add(addMarck(p_lat_lgt));
-}
-addMarck(LatLng p_lat_lgt){
-  return Marker(
-    width: 80.0,
-    height: 80.0,
-    point: p_lat_lgt,
-    builder: (ctx) =>  Container(
-      color: Colors.amber.withOpacity(0.5),
-    ),
-  );
-}
-////////////////////////////////////////////////////////////////////////
-List<CircleMarker> listCircleMarker = [
-  addCircleMarker(p_LatLang: listPoints[3]),
-];
-addCircleMarker({LatLng p_LatLang}){
-  return CircleMarker(
-      point: p_LatLang,
-      color: Colors.blue.withOpacity(0.7),
-      useRadiusInMeter: true,
-      radius: 2000 // 2000 meters | 2 km
-  );
-}
+StreamSubscription _getPositionSubscription;
+bool boolOnLocationChanged = false;
 ////////////////////////////////////////////////////////////////////////
 List<LatLng> listPoints =[
   LatLng(36.7681961,3.0404258),//algerCenter
