@@ -18,11 +18,18 @@ class _PageOneState extends State<PageOne> {
     );
   }
   bool boolFavorite = false;
+  bool boolLogin = false;
   widgetBody(BuildContext ccc) {
     return Center(
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            RaisedButton(
+              child: Text('${boolLogin==true?"Login":"Logout"}'),
+              onPressed: () { setState(() {
+                boolLogin = !boolLogin;
+              });},
+            ),
             FloatingActionButton(
               child: Icon(Icons.navigate_next),
               onPressed: () {
